@@ -7,11 +7,16 @@ TagManager:
   - Fire
   - Stick
   - Item
+  - Win
+  - Trap
+  - Point
+  - Hand
+  - Winwin
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Win
   - Water
   - UI
   - 
