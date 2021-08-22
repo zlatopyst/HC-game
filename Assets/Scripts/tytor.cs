@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class tytor : MonoBehaviour
+public class Tytor : MonoBehaviour
 {
     private float time = 3;
     private Text schet;
     private bool ready;
-    public GameObject UI;
+    [SerializeField] private GameObject UI;
     private Animator text_animator;
-    // Start is called before the first frame update
+
     void Start()
     {
         text_animator = transform.GetChild(1).gameObject.GetComponent<Animator>();
         ready = false;
         schet = transform.GetChild(1).gameObject.GetComponent<Text>();
     }
-    // Update is called once per frame
+
     public void OnClicked()
     {
         ready = true;
@@ -31,7 +31,7 @@ public class tytor : MonoBehaviour
         {
             time -= Time.deltaTime;
             Otschet();
-            //print(stars);
+
         }
     }
     private void Otschet()

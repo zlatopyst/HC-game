@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class NextLevel : MonoBehaviour
 {
-    public GameObject Level1;
-    public GameObject Level2;
-    public GameObject Level3;
-    public GameObject instance;
+    [SerializeField] private GameObject Level1;
+    [SerializeField] private GameObject Level2;
+    [SerializeField] private GameObject Level3;
+    [SerializeField] private GameObject instance;
 
     private int count = 0;
     // Start is called before the first frame update

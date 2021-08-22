@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class trap : MonoBehaviour
+public class Trap : MonoBehaviour
 {
     public static bool drop;
-    public Transform parent;
-    public Transform child;
+    [SerializeField] private Transform parent;
+    [SerializeField] private Transform child;
     private float Pos;
-    public Vector3 direction;
-    public Transform point;
+    [SerializeField] private Vector3 direction;
+    [SerializeField] private Transform point;
     private Vector3 pos;
     private Quaternion rot;
-    // Start is called before the first frame update
+
     public static event Action Drop;
     void Start()
     {
@@ -23,10 +23,9 @@ public class trap : MonoBehaviour
         pos = transform.position;
         rot = transform.rotation;
         Buttons.Button += newStart;
-       // Buttons.Button2 += newStart;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
 
@@ -35,7 +34,6 @@ public class trap : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            //drop = true;
             Drop.Invoke();
             GetComponent<BoxCollider>().enabled = false;
             Ray ray = new Ray(point.transform.position, point.transform.forward);

@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class manController : MonoBehaviour
+public class ManController : MonoBehaviour
 {
 
-    public float speedMove;
-    public float x;
-    public float jumpPower;
-    public bool canMove = true;
+    [SerializeField] private float speedMove;
+    [SerializeField] private float x;
+    [SerializeField] private bool canMove = true;
 
     private float gravityForce;
     public Vector3 moveVector;
@@ -17,13 +16,13 @@ public class manController : MonoBehaviour
     private Animator ch_animator;
     public static float h; 
     public static float v;
-    public Animation anim;
+    [SerializeField] private Animation anim;
+
 
     private Vector3 pos;
     private Quaternion rot;
     private float pushPower = 5.0f;
 
-    //public Transform target;
     private void Start()
     {
         anim = GetComponent<Animation>();
@@ -32,19 +31,19 @@ public class manController : MonoBehaviour
         ch_animator = GetComponent<Animator>();
         pos = transform.position;
         rot = transform.rotation;
-        Buttons.Button += newStart;
-        Buttons.Button2 += newStart;
-        trap.Drop += Drop;
+        Buttons.Button += Restart;
+        Buttons.Button2 += Restart;
+        Trap.Drop += Drop;
     }
     private void Update()
     {
         CharacterMove();
         Gravity();
-        if (collect.hold)
+        if (Collect.hold)
         {
             speedMove = x-1;
         }
-        if (collect.hold == false)
+        if (Collect.hold == false)
         {
             speedMove = x;
         }
@@ -66,16 +65,15 @@ public class manController : MonoBehaviour
         moveVector.z = v * speedMove;
 
 
-       if (collect.drop)
+       if (Collect.drop)
         {
-            // ch_animator.SetBool("Move", false);
             canMove = false;
             ch_animator.SetTrigger("Take");
 
         }
-        if (collect.drop == false & trap.drop == false)
+        if (Collect.drop == false & Trap.drop == false)
         {
-            if ((moveVector.x != 0 || moveVector.z != 0) & collect.hold == true & canMove == true)
+            if ((moveVector.x != 0 || moveVector.z != 0) & Collect.hold == true & canMove == true)
             {
                 ch_animator.SetBool("Walk", true);
 
@@ -83,7 +81,7 @@ public class manController : MonoBehaviour
             else ch_animator.SetBool("Walk", false);
 
 
-            if ((moveVector.x != 0 || moveVector.z != 0) & collect.hold == false & canMove == true) ch_animator.SetBool("Move", true);
+            if ((moveVector.x != 0 || moveVector.z != 0) & Collect.hold == false & canMove == true) ch_animator.SetBool("Move", true);
             else ch_animator.SetBool("Move", false);
 
             if (canMove == true)
@@ -101,13 +99,13 @@ public class manController : MonoBehaviour
     private void canMovee()
     {
         canMove = true;
-        collect.drop = false;
+        Collect.drop = false;
         ch_animator.ResetTrigger("Take");
     }
     private void falled()
     {
         canMove = true;
-        trap.drop = false;
+        Trap.drop = false;
         ch_animator.ResetTrigger("Fall");
     }
 
@@ -119,7 +117,6 @@ public class manController : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-       // Debug.Log(hit.gameObject.tag);
         Rigidbody body = hit.collider.attachedRigidbody;
 
         if (body == null || body.isKinematic)
@@ -130,13 +127,13 @@ public class manController : MonoBehaviour
         {
             return;
         }
-        if(hit.gameObject.tag != "Win")
+        if(!hit.gameObject.CompareTag("Win"))
         {
             Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
             body.velocity = pushDir * pushPower;
         }
     }
-    private void newStart()
+    private void Restart()
     {
         transform.position = pos;
         transform.rotation = rot;

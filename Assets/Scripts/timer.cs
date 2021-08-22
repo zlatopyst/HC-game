@@ -3,31 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class timer : MonoBehaviour
+public class Timer : MonoBehaviour
 {
-    public GameObject Lose;
-    public Slider mySlider;
-    public Slider mySliderBG;
-    public float timeLeft = 60;
-    private float gameTime;
+    [SerializeField] private GameObject Lose;
+    [SerializeField] private Slider mySlider;
+    [SerializeField] private Slider mySliderBG;
+    [SerializeField] private float timeLeft;
     private float i;
     public static int stars;
     
 
-    // Start is called before the first frame update
+
     void Start()
     {
-        //Lose = ItemsToFind.Lose;
+
         mySlider.minValue = 0;
         mySlider.maxValue = timeLeft;
         mySliderBG.minValue = 0;
         mySliderBG.maxValue = timeLeft;
         i = timeLeft;
-        Buttons.Button += newStart;
-        Buttons.Button2 += newStart2;
+        Buttons.Button += Restart;
+        Buttons.Button2 += newStart;
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -36,11 +34,10 @@ public class timer : MonoBehaviour
 
         if (timeLeft > 0 & ItemsToWin.count != 0)
         {
-            timeLeft -= Time.deltaTime * enemy.x;
+            timeLeft -= Time.deltaTime * Enemy.x;
             mySlider.value = timeLeft;
             mySliderBG.value = timeLeft;
             Stars();
-            //print(stars);
         }
         if (timeLeft <= 0)
         {
@@ -53,7 +50,6 @@ public class timer : MonoBehaviour
     public void Stars()
     {
 
-            //Debug.Log(stars);
             if (timeLeft > (i / 3 * 2))
             {
                 stars = 3;
@@ -68,14 +64,14 @@ public class timer : MonoBehaviour
             }
             else { stars = 0;  }
     }
-    private void newStart()
+    private void Restart()
     {
         timeLeft = i;
         Lose.SetActive(false);
         mySlider.gameObject.SetActive(true);
         mySliderBG.gameObject.SetActive(true);
     }
-    private void newStart2()
+    private void newStart()
     {
         timeLeft = i;
         mySlider.gameObject.SetActive(true);

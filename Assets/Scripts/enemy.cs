@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemy : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     public static int x;
-    public int coef;
+    [SerializeField] private int coef;
     // Start is called before the first frame update
     void Start()
     {

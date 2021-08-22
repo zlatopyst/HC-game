@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class stick : MonoBehaviour
+public class Stick : MonoBehaviour
 {
-    public FloatingJoystick controller;
-    private manController manController;
-    // Start is called before the first frame update
+    [SerializeField] private FloatingJoystick controller;
+    private ManController manController;
+
     void Start()
     {
-        manController = GetComponent<manController>();
+        manController = GetComponent<ManController>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        manController.v = -controller.input.y;
-        manController.h = -controller.input.x;
+        ManController.v = -controller.input.y;
+        ManController.h = -controller.input.x;
     }
 }

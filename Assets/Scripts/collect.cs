@@ -3,71 +3,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class collect : MonoBehaviour
+public class Collect : MonoBehaviour
 {
 
     public static bool hold = false;
-    public bool Localhold = false;
-    //public static bool anim = false;
     public static bool drop = false;
-    public Transform hand; 
-    public Transform loc;
-    public float Speed = 15f;
-    public Transform point;
-    public GameObject ZoneItem;
     public static bool fall = false;
 
-    //private Animator drop_animator;
+    [SerializeField] private bool Localhold = false;
+    [SerializeField] private Transform hand;
+    [SerializeField] private Transform loc;
+    [SerializeField] private float Speed = 15f;
+    [SerializeField] private Transform point;
+    [SerializeField] private GameObject ZoneItem;
+
     private Vector3 pos;
     private Quaternion rot;
     private Vector3 scale;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         hand = ItemsToFind.hand;
         point = ItemsToFind.point;
-        //point = GameObject.FindWithTag("Point").GetComponent<Transform>();
-        //drop_animator = this.gameObject.GetComponent<Animator>();
         pos = transform.position;
         rot = transform.rotation;
         scale = transform.localScale;
-        //parent = this.gameObject.transform.GetChild(0);
         Buttons.Button += newStart;
-        //Buttons.Button2 += newStart;
-        trap.Drop += Drop;
+        Trap.Drop += Drop;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
-
-    void isTrigger()
+    void IsTrigger()
     {
-        //drop_animator.SetBool("Drop", false);
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<BoxCollider>().isTrigger = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (trap.drop)
-        //{
-         //   hold = false;
-         //   fall = true;
-         //   Drop();
-          //  Invoke("isTrigger", 5f);
-        //}
+
         if (other.gameObject.tag == "Player")
         {
             hold = true;
             Localhold = true;
             OnHand();
             drop = true;
-            //drop_animator.SetBool("Take", false);
         }
         if (other.gameObject.tag == "Item")
         {
@@ -81,15 +62,8 @@ public class collect : MonoBehaviour
         }
 
     }
-   /* private void OnCollisionEnter(Collision collision)
-    {
-        hold = true;
-       OnHand();
-    }*/
     private void OnHand()
     {
-        //transform.localScale = transform.localScale - new Vector3(0.5f, 0.5f, 0.5f);
-        //drop_animator.SetTrigger("Take");
         transform.position = hand.position;
         transform.parent = hand.transform;
         GetComponent<MeshCollider>().enabled = false;
@@ -112,12 +86,8 @@ public class collect : MonoBehaviour
                 GetComponent<BoxCollider>().enabled = false;
                 GetComponent<Rigidbody>().isKinematic = false;
                 transform.parent = loc.transform;
-                //transform.localScale = scale;
                 GetComponent<Rigidbody>().AddForce(dir * Speed);
-                //drop_animator.SetTrigger("Drop");
-                Invoke("isTrigger", 3.5f);
-                //transform.localScale = scale;
-                //transform.position = parent.position;
+                Invoke(nameof(IsTrigger), 3.5f);
                 hold = false;
                 Localhold = false;
             }
@@ -125,18 +95,20 @@ public class collect : MonoBehaviour
     }
     private void newStart()
     {
-        transform.parent = loc.transform;
-        transform.rotation = rot;
-        transform.position = pos;
-        GetComponent<MeshCollider>().enabled = true;
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-        Invoke("isTrigger", 2f);
-        ZoneItem.SetActive(false);
-        //transform.localScale = scale;
-        hold = false;
-        Localhold = false;
-        drop = true;
+        if (this.gameObject != null)
+        {
+            hold = false;
+            Localhold = false;
+            drop = true;
+            transform.parent = loc.transform;
+            transform.rotation = rot;
+            transform.position = pos;
+            GetComponent<MeshCollider>().enabled = true;
+            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<Rigidbody>().isKinematic = false;
+            Invoke(nameof(IsTrigger), 2f);
+            ZoneItem.SetActive(false);
+        }
     }
 
 }
