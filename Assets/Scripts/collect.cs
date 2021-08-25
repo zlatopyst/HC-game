@@ -24,12 +24,15 @@ public class Collect : MonoBehaviour
 
     void Start()
     {
+
         hand = ItemsToFind.hand;
         point = ItemsToFind.point;
         pos = transform.position;
         rot = transform.rotation;
         scale = transform.localScale;
         Buttons.Button += newStart;
+        NextLevel.StopEvent += StopEvent;
+        NextLevel.StartEvent += StartEvent;
         Trap.Drop += Drop;
     }
 
@@ -110,5 +113,12 @@ public class Collect : MonoBehaviour
             ZoneItem.SetActive(false);
         }
     }
-
+    private void StopEvent()
+    {
+        Buttons.Button -= newStart;
+    }
+    private void StartEvent()
+    {
+        //Buttons.Button += newStart;
+    }
 }

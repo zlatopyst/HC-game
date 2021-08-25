@@ -23,6 +23,8 @@ public class Trap : MonoBehaviour
         pos = transform.position;
         rot = transform.rotation;
         Buttons.Button += newStart;
+        NextLevel.StopEvent += StopEvent;
+        NextLevel.StartEvent += StartEvent;
     }
 
 
@@ -46,5 +48,13 @@ public class Trap : MonoBehaviour
         GetComponent<BoxCollider>().enabled = true;
         transform.position = pos;
         transform.rotation = rot;
+    }
+    private void StopEvent()
+    {
+        Buttons.Button -= newStart;
+    }
+    private void StartEvent()
+    {
+       // Buttons.Button += newStart;
     }
 }

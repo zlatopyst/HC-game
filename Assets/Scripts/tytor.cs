@@ -36,7 +36,6 @@ public class Tytor : MonoBehaviour
     }
     private void Otschet()
     {
-        Debug.Log(time);
         if (time > 2)
         {
             schet.text = "3";

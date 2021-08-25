@@ -1,35 +1,42 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NextLevel : MonoBehaviour
 {
-    [SerializeField] private GameObject Level1;
-    [SerializeField] private GameObject Level2;
-    [SerializeField] private GameObject Level3;
-    [SerializeField] private GameObject instance;
+    [SerializeField] private int countLevels;
+    private GameObject[] Level;
+    private GameObject[] LeveltoDestroy;
 
+    public static event Action StopEvent;
+    public static event Action StartEvent;
     private int count = 0;
-    // Start is called before the first frame update
+
     void Start()
     {
-        Buttons.Button2 += Level;
-        Level1 = Instantiate(Resources.Load("Level1", typeof(GameObject))) as GameObject;
-        
+        Level = new GameObject[countLevels];
+        LeveltoDestroy = new GameObject[countLevels];
+        Buttons.Button2 += SwitchLevel;
+        for (int i = 0; i < countLevels; i++)
+        {
+            Level[i] = Resources.Load<GameObject>("Level" + (i+1));
+            Debug.Log(Level[i]);
+        }
+        LeveltoDestroy[count] = Instantiate(Level[count]);
     }
 
-    private void Level()
+    private void SwitchLevel()
     {
-        if (count == 0)
+        Debug.Log(count);     
+            StopEvent.Invoke();
+            Destroy(LeveltoDestroy[count]);
+        if ((count + 1) >= countLevels)
         {
-            Object.Destroy(Level1);
-            Level2 = Instantiate(Resources.Load("Level2", typeof(GameObject))) as GameObject;
+            count = -1;
         }
-        if (count == 1)
-        {
-           Object.Destroy(Level2);
-            Level3 = Instantiate(Resources.Load("Level3", typeof(GameObject))) as GameObject;
-        }
-        count++;
+        LeveltoDestroy[count + 1] = Instantiate(Level[count + 1]);
+            StartEvent.Invoke();
+            count++;
     }
 }
